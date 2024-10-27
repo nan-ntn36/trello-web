@@ -1,10 +1,10 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import TrelloCard from "./Card/Card";
+import React from 'react';
+import Box from '@mui/material/Box';
+import TrelloCard from './Card/Card';
 import {
   SortableContext,
   verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+} from '@dnd-kit/sortable';
 
 function ListCards({ cards }) {
   return (
@@ -14,13 +14,13 @@ function ListCards({ cards }) {
     >
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
           gap: 1,
-          p: "0 5px",
-          m: "0 5px",
-          overflowX: "hidden",
-          overflowY: "auto",
+          p: '0 5px',
+          m: '0 5px',
+          overflowX: 'hidden',
+          overflowY: 'auto',
           maxHeight: (theme) =>
             `calc(
             ${theme.trelloCustom.boardContentHeight} 
@@ -28,11 +28,11 @@ function ListCards({ cards }) {
             - ${theme.trelloCustom.columnHeaderHeight} 
             - ${theme.trelloCustom.columFooterHeight}
             )`,
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "#ced0da",
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#ced0da',
           },
-          "&::-webkit-scrollbar-thumb:hover": {
-            backgroundColor: "bfc2cf",
+          '&::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: 'bfc2cf',
           },
         }}
       >

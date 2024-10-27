@@ -1,12 +1,12 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import Column from "./Column/Column";
-import Button from "@mui/material/Button";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import React from 'react';
+import Box from '@mui/material/Box';
+import Column from './Column/Column';
+import Button from '@mui/material/Button';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import {
   SortableContext,
   horizontalListSortingStrategy,
-} from "@dnd-kit/sortable";
+} from '@dnd-kit/sortable';
 
 function ListColumns({ columns }) {
   // SortableContext chỉ nhận [] mới có animation
@@ -17,13 +17,13 @@ function ListColumns({ columns }) {
     >
       <Box
         sx={{
-          width: "100%",
-          height: "100%",
-          bgcolor: "inherit",
-          display: "flex",
-          overflowX: "auto",
-          overflowY: "hidden",
-          "&::-webkit-scrollbar-track": { m: 2 },
+          width: '100%',
+          height: '100%',
+          bgcolor: 'inherit',
+          display: 'flex',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          '&::-webkit-scrollbar-track': { m: 2 },
         }}
       >
         {columns?.map((column) => (
@@ -33,20 +33,20 @@ function ListColumns({ columns }) {
         {/* box add new column */}
         <Box
           sx={{
-            minWidth: "200px",
-            maxWidth: "200px",
+            minWidth: '200px',
+            maxWidth: '200px',
             m: 2,
-            borderRadius: "6px",
-            height: "fit-content",
-            bgcolor: "#ffffff3d",
+            borderRadius: '6px',
+            height: 'fit-content',
+            bgcolor: '#ffffff3d',
           }}
         >
           <Button
             startIcon={<NoteAddIcon />}
             sx={{
-              color: "white",
-              width: "100%",
-              justifyContent: "flex-start",
+              color: 'white',
+              width: '100%',
+              justifyContent: 'flex-start',
               pl: 2.5,
               py: 1,
             }}

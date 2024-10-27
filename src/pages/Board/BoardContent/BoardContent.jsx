@@ -1,6 +1,6 @@
-import Box from "@mui/material/Box";
-import ListColumns from "./ListColumns/ListColumns";
-import { mapOrder } from "~/utils/sort";
+import Box from '@mui/material/Box';
+import ListColumns from './ListColumns/ListColumns';
+import { mapOrder } from '~/utils/sort';
 import {
   DndContext,
   PointerSensor,
@@ -14,17 +14,17 @@ import {
   pointerWithin,
   rectIntersection,
   getFirstCollision,
-} from "@dnd-kit/core";
-import { useEffect, useState, useCallback, useRef } from "react";
-import { arrayMove } from "@dnd-kit/sortable";
-import Column from "./ListColumns/Column/Column";
-import TrelloCard from "./ListColumns/Column/ListCards/Card/Card";
-import { cloneDeep, isEmpty } from "lodash";
-import { generatePlaceholder } from "~/utils/formats";
+} from '@dnd-kit/core';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { arrayMove } from '@dnd-kit/sortable';
+import Column from './ListColumns/Column/Column';
+import TrelloCard from './ListColumns/Column/ListCards/Card/Card';
+import { cloneDeep, isEmpty } from 'lodash';
+import { generatePlaceholder } from '~/utils/formats';
 
 const ACTIVE_DRAG_ITEM_TYPE = {
-  COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
-  CARD: "ACTIVE_DRAG_ITEM_TYPE_CARD",
+  COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
+  CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD',
 };
 
 function BoardContent({ board }) {
@@ -53,7 +53,7 @@ function BoardContent({ board }) {
   const lastOverId = useRef(null);
 
   useEffect(() => {
-    setOrderedColumn(mapOrder(board?.columns, board?.columnOrderIds, "_id"));
+    setOrderedColumn(mapOrder(board?.columns, board?.columnOrderIds, '_id'));
   }, [board]);
 
   /// tìm columns theo cardId
@@ -281,7 +281,7 @@ function BoardContent({ board }) {
     sideEffects: defaultDropAnimationSideEffects({
       styles: {
         active: {
-          opacity: "0.5",
+          opacity: '0.5',
         },
       },
     }),
@@ -302,7 +302,7 @@ function BoardContent({ board }) {
       //   : rectIntersection(args);
 
       // Tìm thằng over đầu tiên trong đám intersections ở trên
-      let overId = getFirstCollision(pointerIntersections, "id");
+      let overId = getFirstCollision(pointerIntersections, 'id');
 
       if (overId) {
         const checkColumn = orderedColumns.find(
@@ -346,10 +346,10 @@ function BoardContent({ board }) {
       <Box
         sx={{
           bgcolor: (theme) =>
-            theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
-          width: "100%",
+            theme.palette.mode === 'dark' ? '#34495e' : '#1976d2',
+          width: '100%',
           height: (theme) => theme.trelloCustom.boardContentHeight,
-          p: "10px 0",
+          p: '10px 0',
         }}
       >
         <ListColumns columns={orderedColumns} />
