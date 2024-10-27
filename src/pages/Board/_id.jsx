@@ -6,8 +6,6 @@ import BoardContent from './BoardContent/BoardContent';
 import { useEffect, useState } from 'react';
 import { fetchBoardDetailsAPI } from '~/apis';
 
-
-
 function Board() {
   const [board, setBoard] = useState(null);
 
