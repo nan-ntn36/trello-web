@@ -23,6 +23,7 @@ import { mapOrder } from '~/utils/sort';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import CloseIcon from '@mui/icons-material/Close';
+import { toast } from 'react-toastify';
 
 function Column({ column }) {
   const {
@@ -49,7 +50,10 @@ function Column({ column }) {
   const [newCardTitle, setNewCardTitle] = useState('');
 
   const addNewCard = () => {
-    if (!newCardTitle) return console.error('Please enter Card title');
+    if (!newCardTitle)
+      return toast.error('Please enter Card title', {
+        position: 'bottom-right',
+      });
 
     setNewCardTitle('');
     toggelOpenNewCardForm();

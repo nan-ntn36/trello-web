@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import { TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { toast } from 'react-toastify';
 
 function ListColumns({ columns }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
@@ -18,7 +19,7 @@ function ListColumns({ columns }) {
   const [newColumnTitle, setNewColumnTitle] = useState('');
 
   const addNewColumn = () => {
-    if (!newColumnTitle) return console.error('Please enter column title');
+    if (!newColumnTitle) return toast.error('Please enter column title');
 
     setNewColumnTitle('');
     toggelOpenNewColumnForm();
