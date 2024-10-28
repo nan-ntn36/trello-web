@@ -3,18 +3,19 @@ import ListColumns from './ListColumns/ListColumns';
 import { mapOrder } from '~/utils/sort';
 import {
   DndContext,
-  PointerSensor,
+  // PointerSensor,
   useSensor,
   useSensors,
-  MouseSensor,
-  TouchSensor,
+  // MouseSensor,
+  // TouchSensor,
   DragOverlay,
   defaultDropAnimationSideEffects,
   closestCorners,
   pointerWithin,
-  rectIntersection,
+  // rectIntersection,
   getFirstCollision,
 } from '@dnd-kit/core';
+import { MouseSensor, TouchSensor } from '~/customLibraries/DndKitSensors';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { arrayMove } from '@dnd-kit/sortable';
 import Column from './ListColumns/Column/Column';
@@ -28,9 +29,9 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 };
 
 function BoardContent({ board }) {
-  const pointerSensor = useSensor(PointerSensor, {
-    activationConstraint: { distance: 10 },
-  });
+  // const pointerSensor = useSensor(PointerSensor, {
+  //   activationConstraint: { distance: 10 },
+  // });
   // Yêu cầu di chuyển chuột thì mới kích hoạt event, fix trương hợp click bị gọi event
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: { distance: 10 },
@@ -138,7 +139,7 @@ function BoardContent({ board }) {
           (card) => card._id
         );
       }
-      console.log(nextColumns);
+      // console.log(nextColumns);
       return nextColumns;
     });
   };

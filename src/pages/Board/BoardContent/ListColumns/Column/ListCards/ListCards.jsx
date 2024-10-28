@@ -1,4 +1,3 @@
-import React from 'react';
 import Box from '@mui/material/Box';
 import TrelloCard from './Card/Card';
 import {
@@ -17,7 +16,7 @@ function ListCards({ cards }) {
           display: 'flex',
           flexDirection: 'column',
           gap: 1,
-          p: '0 5px',
+          p: '0 5px 5px 5px',
           m: '0 5px',
           overflowX: 'hidden',
           overflowY: 'auto',
