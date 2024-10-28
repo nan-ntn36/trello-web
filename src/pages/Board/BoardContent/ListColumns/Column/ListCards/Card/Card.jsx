@@ -1,4 +1,3 @@
-import React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -45,6 +44,8 @@ function TrelloCard({ card }) {
         boxShadow: '0 1px 1px rgba(0,0,0,0.2)',
         overflow: 'unset',
         display: card?.FE_PlaceholderCard ? 'none' : 'block',
+        border: '1px solid transparent',
+        '&:hover': { borderColor: (theme) => theme.palette.success.main },
       }}
       ref={setNodeRef}
       style={dndKitCardStyle}
