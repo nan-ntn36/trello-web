@@ -28,7 +28,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD',
 };
 
-function BoardContent({ board }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
   // const pointerSensor = useSensor(PointerSensor, {
   //   activationConstraint: { distance: 10 },
   // });
@@ -267,6 +267,10 @@ function BoardContent({ board }) {
         // const dndOrderedColumnIds = dndOrderedColumns.map((c) => c._id);
         // console.log('dndOrderColumn',dndOrderedColumns)
         // console.log('dndOrderColumnIds',dndOrderedColumnIds)
+
+        // xữ lý kéo thả colum
+        moveColumns(dndOrderedColumns);
+        // vãn giữ nguyên tránh bất đồng bộ
         setOrderedColumn(dndOrderedColumns);
       }
     }
@@ -353,7 +357,11 @@ function BoardContent({ board }) {
           p: '10px 0',
         }}
       >
-        <ListColumns columns={orderedColumns} />
+        <ListColumns
+          columns={orderedColumns}
+          createNewColumn={createNewColumn}
+          createNewCard={createNewCard}
+        />
         {/* giữ chổ khi kéo */}
         <DragOverlay dropAnimation={dropAnimationCustum}>
           {!activeDragItemStype && null}

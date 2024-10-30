@@ -25,7 +25,7 @@ import { CSS } from '@dnd-kit/utilities';
 import CloseIcon from '@mui/icons-material/Close';
 import { toast } from 'react-toastify';
 
-function Column({ column }) {
+function Column({ column, createNewCard }) {
   const {
     attributes,
     listeners,
@@ -49,12 +49,16 @@ function Column({ column }) {
   const toggelOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
   const [newCardTitle, setNewCardTitle] = useState('');
 
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle)
       return toast.error('Please enter Card title', {
         position: 'bottom-right',
       });
-
+    const newCardData = {
+      title: newCardTitle,
+      columnId: column._id,
+    };
+    await createNewCard(newCardData);
     setNewCardTitle('');
     toggelOpenNewCardForm();
   };
