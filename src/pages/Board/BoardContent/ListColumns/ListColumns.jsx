@@ -12,15 +12,19 @@ import { TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { toast } from 'react-toastify';
 
-function ListColumns({ columns }) {
+function ListColumns({ columns, createNewColumn, createNewCard }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const toggelOpenNewColumnForm = () =>
     setOpenNewColumnForm(!openNewColumnForm);
   const [newColumnTitle, setNewColumnTitle] = useState('');
 
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (!newColumnTitle) return toast.error('Please enter column title');
 
+    const newColumnData = {
+      title: newColumnTitle,
+    };
+    await createNewColumn(newColumnData);
     setNewColumnTitle('');
     toggelOpenNewColumnForm();
   };
@@ -43,7 +47,11 @@ function ListColumns({ columns }) {
         }}
       >
         {columns?.map((column) => (
-          <Column key={column._id} column={column} />
+          <Column
+            key={column._id}
+            column={column}
+            createNewCard={createNewCard}
+          />
         ))}
 
         {/* box add new column */}

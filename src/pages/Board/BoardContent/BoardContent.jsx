@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import ListColumns from './ListColumns/ListColumns';
-import { mapOrder } from '~/utils/sort';
 import {
   DndContext,
   // PointerSensor,
@@ -28,7 +27,14 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD',
 };
 
-function BoardContent({ board }) {
+function BoardContent({
+  board,
+  createNewColumn,
+  createNewCard,
+  moveColumns,
+  movecardInTheSameColumn,
+  moveCardToDifferentColumn,
+}) {
   // const pointerSensor = useSensor(PointerSensor, {
   //   activationConstraint: { distance: 10 },
   // });
@@ -54,7 +60,8 @@ function BoardContent({ board }) {
   const lastOverId = useRef(null);
 
   useEffect(() => {
-    setOrderedColumn(mapOrder(board?.columns, board?.columnOrderIds, '_id'));
+    // column đã được sắp xếp ở component cha cao nhất
+    setOrderedColumn(board.columns);
   }, [board]);
 
   /// tìm columns theo cardId
@@ -64,7 +71,7 @@ function BoardContent({ board }) {
     );
   };
 
-  // Cập nhật state trong trường hợp duy chuyển giữa các column khác nhau
+  // khỏi tạo Func chung xử lý việc Cập nhật state trong trường hợp duy chuyển giữa các column khác nhau
   const moveCardBetweenDifferentColumns = (
     overColumn,
     overCardId,
@@ -72,7 +79,8 @@ function BoardContent({ board }) {
     over,
     activeColumn,
     activeDragCardId,
-    activeDragCardData
+    activeDragCardData,
+    triggerFrom
   ) => {
     setOrderedColumn((prevColumns) => {
       // tìm vị trí index của cái overCard trong column đích(nơi mà sẽ thả card vào)
@@ -139,10 +147,20 @@ function BoardContent({ board }) {
           (card) => card._id
         );
       }
+      // nếu function này được gọi từ  handleDragEnd nghĩa là đã kéo thả xong lúc này mới xử lý goi API
+      if (triggerFrom === 'handleDragEnd') {
+        moveCardToDifferentColumn(
+          activeDragCardId,
+          oldColumnWhenDragCard._id,
+          nextOverColumn._id,
+          nextColumns
+        );
+      }
       // console.log(nextColumns);
       return nextColumns;
     });
   };
+
   const handleDragStart = (event) => {
     //set dữ liệu kéo
     setActiveDragItemId(event?.active?.id);
@@ -183,7 +201,8 @@ function BoardContent({ board }) {
         over,
         activeColumn,
         activeDragCardId,
-        activeDragCardData
+        activeDragCardData,
+        'handleDragOver'
       );
     }
   };
@@ -215,7 +234,8 @@ function BoardContent({ board }) {
           over,
           activeColumn,
           activeDragCardId,
-          activeDragCardData
+          activeDragCardData,
+          'handleDragEnd'
         );
       } else {
         const oldCardIndex = oldColumnWhenDragCard?.cards?.findIndex(
@@ -232,6 +252,8 @@ function BoardContent({ board }) {
           newCardIndex
         );
 
+        const dndOrderedCardIds = dndOrderedCard?.map((card) => card._id);
+
         setOrderedColumn((prevColumns) => {
           const nextColumns = cloneDeep(prevColumns);
 
@@ -242,10 +264,16 @@ function BoardContent({ board }) {
           //cập nhật giá trị mới là card và cardsOrder
           targetColumn.cards = dndOrderedCard;
 
-          targetColumn.cardOrderIds = dndOrderedCard?.map((card) => card._id);
+          targetColumn.cardOrderIds = dndOrderedCardIds;
 
           return nextColumns;
         });
+        // gọi api cập nhật dữ liệu
+        movecardInTheSameColumn(
+          dndOrderedCard,
+          dndOrderedCardIds,
+          oldColumnWhenDragCard._id
+        );
       }
     }
 
@@ -267,7 +295,10 @@ function BoardContent({ board }) {
         // const dndOrderedColumnIds = dndOrderedColumns.map((c) => c._id);
         // console.log('dndOrderColumn',dndOrderedColumns)
         // console.log('dndOrderColumnIds',dndOrderedColumnIds)
+        // vãn giữ nguyên tránh bất đồng bộ
         setOrderedColumn(dndOrderedColumns);
+        // xữ lý kéo thả colum
+        moveColumns(dndOrderedColumns);
       }
     }
 
@@ -353,7 +384,11 @@ function BoardContent({ board }) {
           p: '10px 0',
         }}
       >
-        <ListColumns columns={orderedColumns} />
+        <ListColumns
+          columns={orderedColumns}
+          createNewColumn={createNewColumn}
+          createNewCard={createNewCard}
+        />
         {/* giữ chổ khi kéo */}
         <DragOverlay dropAnimation={dropAnimationCustum}>
           {!activeDragItemStype && null}

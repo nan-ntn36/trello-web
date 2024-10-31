@@ -19,13 +19,12 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import ListCards from './ListCards/ListCards';
-import { mapOrder } from '~/utils/sort';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import CloseIcon from '@mui/icons-material/Close';
 import { toast } from 'react-toastify';
 
-function Column({ column }) {
+function Column({ column, createNewCard }) {
   const {
     attributes,
     listeners,
@@ -44,17 +43,22 @@ function Column({ column }) {
   };
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id');
+  // card đã được sắp xếp ở component cha cao nhất
+  const orderedCards = column.cards;
   const [openNewCardForm, setOpenNewCardForm] = useState(false);
   const toggelOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
   const [newCardTitle, setNewCardTitle] = useState('');
 
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle)
       return toast.error('Please enter Card title', {
         position: 'bottom-right',
       });
-
+    const newCardData = {
+      title: newCardTitle,
+      columnId: column._id,
+    };
+    await createNewCard(newCardData);
     setNewCardTitle('');
     toggelOpenNewCardForm();
   };
