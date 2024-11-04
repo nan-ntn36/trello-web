@@ -11,17 +11,22 @@ import { useState } from 'react';
 import { TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { toast } from 'react-toastify';
+import { createNewColumnAPI } from '~/apis';
+import { generatePlaceholder } from '~/utils/formats';
+import { cloneDeep } from 'lodash';
+import {
+  selectCurrentActiveBoard,
+  updateCurrentActiveBoard,
+} from '~/redux/activeBoard/activeBoardSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
-function ListColumns({
-  columns,
-  createNewColumn,
-  createNewCard,
-  deleteColumnDetails,
-}) {
+function ListColumns({ columns }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const toggelOpenNewColumnForm = () =>
     setOpenNewColumnForm(!openNewColumnForm);
   const [newColumnTitle, setNewColumnTitle] = useState('');
+  const dispatch = useDispatch();
+  const board = useSelector(selectCurrentActiveBoard); // lấy dữ liệu từ redux
 
   const addNewColumn = async () => {
     if (!newColumnTitle) return toast.error('Please enter column title');
@@ -29,7 +34,35 @@ function ListColumns({
     const newColumnData = {
       title: newColumnTitle,
     };
-    await createNewColumn(newColumnData);
+
+    // Gọi Api tạo mới column
+    const createColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id,
+    });
+
+    // khi tạo column mới thì chưa có card, cần xử lý vấn đề kéo thả khi card rỗng
+    createColumn.cards = [generatePlaceholder(createColumn)];
+    createColumn.cardOrderIds = [generatePlaceholder(createColumn)._id];
+
+    /**
+   Đoạn này sẽ dính lỗi object is not extensible bởi dù đã copy/clone ra giá trị newboard nhưng bản chất của spread  operator là shallow copy/clone,
+   nên dính phải rules Immutability trong redux toolkit không dùng được hàm push, cách đơn giản nhất lúc này là chúng ta dùng Deep Copy/Clone trong toàn bộ cái Board.
+   */
+
+    //  Cách 1 dùng thư viện
+    // const newBoard = { ...board };
+    const newBoard = cloneDeep(board);
+    newBoard.columns.push(createColumn);
+    newBoard.columnOrderIds.push(createColumn._id);
+    // Cách 2: dùng spreed operator và concat để nối 2 mảng lại với nhau
+    /**
+     * const newBoard = {...board}
+     * newBoard.columns = newBoard.columns.concat([createColumn])
+     * newBoard.columnOrderIds = newBoard.columnOrderIds.concat([createColumn._id])
+     */
+    // cập nhât dữ liệu vào trong redux store
+    dispatch(updateCurrentActiveBoard(newBoard));
     setNewColumnTitle('');
     toggelOpenNewColumnForm();
   };
@@ -52,12 +85,7 @@ function ListColumns({
         }}
       >
         {columns?.map((column) => (
-          <Column
-            key={column._id}
-            column={column}
-            createNewCard={createNewCard}
-            deleteColumnDetails={deleteColumnDetails}
-          />
+          <Column key={column._id} column={column} />
         ))}
 
         {/* box add new column */}
