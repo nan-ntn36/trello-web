@@ -24,8 +24,14 @@ import { CSS } from '@dnd-kit/utilities';
 import CloseIcon from '@mui/icons-material/Close';
 import { toast } from 'react-toastify';
 import { useConfirm } from 'material-ui-confirm';
-
-function Column({ column, createNewCard, deleteColumnDetails }) {
+import { createNewCardAPI, deleteColumnDetailsAPI } from '~/apis';
+import { cloneDeep } from 'lodash';
+import {
+  selectCurrentActiveBoard,
+  updateCurrentActiveBoard,
+} from '~/redux/activeBoard/activeBoardSlice';
+import { useSelector, useDispatch } from 'react-redux';
+function Column({ column }) {
   const {
     attributes,
     listeners,
@@ -50,6 +56,8 @@ function Column({ column, createNewCard, deleteColumnDetails }) {
   const toggelOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
   const [newCardTitle, setNewCardTitle] = useState('');
 
+  const dispatch = useDispatch();
+  const board = useSelector(selectCurrentActiveBoard); // lấy dữ liệu từ redux
   const addNewCard = async () => {
     if (!newCardTitle)
       return toast.error('Please enter Card title', {
@@ -59,7 +67,30 @@ function Column({ column, createNewCard, deleteColumnDetails }) {
       title: newCardTitle,
       columnId: column._id,
     };
-    await createNewCard(newCardData);
+
+    // Gọi api tạo card
+    const createCard = await createNewCardAPI({
+      ...newCardData,
+      boardId: board._id,
+    });
+
+    // tương tự createColumn
+    const newBoard = cloneDeep(board);
+    const updateColumn = newBoard.columns.find(
+      (column) => column._id === createCard.columnId
+    );
+    if (updateColumn) {
+      // nếu column rổng
+      if (updateColumn.cards.some((card) => card.FE_PlaceholderCard)) {
+        updateColumn.cards = [createCard];
+        updateColumn.cardOrderIds = [createCard._id];
+      } else {
+        updateColumn.cards.push(createCard);
+        updateColumn.cardOrderIds.push(createCard._id);
+      }
+    }
+    // update dữ liệu vào trong store
+    dispatch(updateCurrentActiveBoard(newBoard));
     setNewCardTitle('');
     toggelOpenNewCardForm();
   };
@@ -84,7 +115,15 @@ function Column({ column, createNewCard, deleteColumnDetails }) {
       buttonOrder: ['confirm', 'cancel'],
     })
       .then(() => {
-        deleteColumnDetails(column._id);
+        const newBoard = { ...board };
+        newBoard.columns = newBoard.columns.filter((c) => column._id !== c._id);
+        newBoard.columnOrderIds = newBoard.columnOrderIds.filter(
+          (_id) => _id !== column._id
+        );
+        dispatch(updateCurrentActiveBoard(newBoard));
+        deleteColumnDetailsAPI(column._id).then((res) =>
+          toast.success(res?.deleteResult)
+        );
       })
       .catch(() => {});
   };
