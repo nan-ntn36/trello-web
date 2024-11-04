@@ -19,17 +19,18 @@ import {
 } from '~/redux/activeBoard/activeBoardSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useParams } from 'react-router-dom';
+
 function Board() {
   const dispatch = useDispatch();
-  const board = useSelector(selectCurrentActiveBoard); // lấy dữ liệu từ redux
   // const [board, setBoard] = useState(null);
+  const board = useSelector(selectCurrentActiveBoard); // lấy dữ liệu từ redux
+  const { boardId } = useParams();
 
   useEffect(() => {
-    const boardId = '671ef64bf8baf6e103a25c5c';
-
     // call APi, đưa sang extrareducer của redux
     dispatch(fetchBoardDetailsAPI(boardId)); // dữ liệu đang năm ở state
-  }, [dispatch]);
+  }, [dispatch, boardId]);
 
   // khi nào gọi api mà cần hứng kết quả mới cần async và await
 
