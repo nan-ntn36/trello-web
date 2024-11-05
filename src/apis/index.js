@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import authorizeAxiosInstance from '~/utils/authorizeAxios';
 import { API_ROOT } from '~/utils/constants';
 
@@ -56,6 +57,29 @@ export const createNewCardAPI = async (newCardData) => {
     `${API_ROOT}/v1/cards`,
     newCardData
   );
+
+  return response.data;
+};
+
+export const registerUserApi = async (data) => {
+  const response = await authorizeAxiosInstance.post(
+    `${API_ROOT}/v1/users/register`,
+    data
+  );
+  toast.success(
+    'Account created success! Please check email verify you account befor logging in!',
+    { theme: 'colored' }
+  );
+
+  return response.data;
+};
+
+export const verifyUserApi = async (data) => {
+  const response = await authorizeAxiosInstance.put(
+    `${API_ROOT}/v1/users/verify`,
+    data
+  );
+  toast.success('Account verify success!', { theme: 'colored' });
 
   return response.data;
 };
