@@ -1,10 +1,20 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Board from '~/pages/Board/_id';
 import NotFound from '~/pages/404/NotFound';
 import Auth from '~/pages/Auth/Auth';
 import AccountVerification from '~/pages/Auth/AccountVerification';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '~/redux/user/userSlice';
+
+// Sẽ la nhưng router chỉ cho đăng nhập khi đã login
+const ProtectedRoute = ({ user }) => {
+  if (!user) return <Navigate to="/login" replace={true} />;
+  return <Outlet />; // sẽ chạy vào route child trong route này
+};
 
 function App() {
+  const currentUser = useSelector(selectCurrentUser);
+
   return (
     <Routes>
       {/* Redirect Route */}
@@ -15,7 +25,9 @@ function App() {
           <Navigate to="/boards/671ef64bf8baf6e103a25c5c" replace={true} />
         }
       />
-      <Route path="/boards/:boardId" element={<Board />} />
+      <Route element={<ProtectedRoute user={currentUser} />}>
+        <Route path="/boards/:boardId" element={<Board />} />
+      </Route>
       {/* Authentication */}
       <Route path="/login" element={<Auth />} />
       <Route path="/register" element={<Auth />} />
