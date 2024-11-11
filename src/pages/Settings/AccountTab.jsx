@@ -17,8 +17,8 @@ import {
   singleFileValidator,
 } from '~/utils/validators';
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '~/redux/user/userSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCurrentUser, updateUserApi } from '~/redux/user/userSlice';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -38,6 +38,7 @@ const VisuallyHiddenInput = styled('input')({
 
 function AccountTab() {
   const currentUser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
 
   // Những thông tin của user để init vào form (key tương ứng với register phía dưới Field)
   const initialGeneralForm = {
@@ -54,12 +55,19 @@ function AccountTab() {
 
   const submitChangeGeneralInformation = (data) => {
     const { displayname } = data;
-    console.log('displayname: ', displayname);
 
     // Nếu không có sự thay đổi gì về displayname thì không làm gì cả
     if (displayname === currentUser?.displayname) return;
-
     // Gọi API...
+    toast
+      .promise(dispatch(updateUserApi({ displayname })), {
+        pending: 'Update user....',
+      })
+      .then((res) => {
+        if (!res.error) {
+          toast.success('User updated successfully');
+        }
+      });
   };
 
   const uploadAvatar = (e) => {
