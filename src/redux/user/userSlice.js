@@ -32,6 +32,18 @@ export const logoutUserApi = createAsyncThunk(
     return response.data;
   }
 );
+
+//update
+export const updateUserApi = createAsyncThunk(
+  'user/updateUserApi',
+  async (data) => {
+    const response = await authorizeAxiosInstance.put(
+      `${API_ROOT}/v1/users/update`,
+      data
+    );
+    return response.data;
+  }
+);
 // khởi tạo một slice trong kho lưu trử redux
 export const userSlice = createSlice({
   name: 'user',
@@ -42,6 +54,11 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(loginUserApi.fulfilled, (state, action) => {
       //action.payload chính là response.data trả về ở trên
+      const user = action.payload;
+      state.currentUser = user;
+    });
+    //update user
+    builder.addCase(updateUserApi.fulfilled, (state, action) => {
       const user = action.payload;
       state.currentUser = user;
     });

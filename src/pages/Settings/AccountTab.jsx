@@ -17,8 +17,8 @@ import {
   singleFileValidator,
 } from '~/utils/validators';
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '~/redux/user/userSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCurrentUser, updateUserApi } from '~/redux/user/userSlice';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -38,6 +38,7 @@ const VisuallyHiddenInput = styled('input')({
 
 function AccountTab() {
   const currentUser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
 
   // Những thông tin của user để init vào form (key tương ứng với register phía dưới Field)
   const initialGeneralForm = {
@@ -54,17 +55,24 @@ function AccountTab() {
 
   const submitChangeGeneralInformation = (data) => {
     const { displayname } = data;
-    console.log('displayname: ', displayname);
 
     // Nếu không có sự thay đổi gì về displayname thì không làm gì cả
     if (displayname === currentUser?.displayname) return;
-
     // Gọi API...
+    toast
+      .promise(dispatch(updateUserApi({ displayname })), {
+        pending: 'Update user....',
+      })
+      .then((res) => {
+        if (!res.error) {
+          toast.success('User updated successfully');
+        }
+      });
   };
 
   const uploadAvatar = (e) => {
     // Lấy file thông qua e.target?.files[0] và validate nó trước khi xử lý
-    console.log('e.target?.files[0]: ', e.target?.files[0]);
+    // console.log('e.target?.files[0]: ', e.target?.files[0]);
     const error = singleFileValidator(e.target?.files[0]);
     if (error) {
       toast.error(error);
@@ -75,12 +83,22 @@ function AccountTab() {
     let reqData = new FormData();
     reqData.append('avatar', e.target?.files[0]);
     // Cách để log được dữ liệu thông qua FormData
-    console.log('reqData: ', reqData);
-    for (const value of reqData.values()) {
-      console.log('reqData Value: ', value);
-    }
-
+    // console.log('reqData: ', reqData);
+    // for (const value of reqData.values()) {
+    //   console.log('reqData Value: ', value);
+    // }
     // Gọi API...
+    toast
+      .promise(dispatch(updateUserApi(reqData)), {
+        pending: 'Update user....',
+      })
+      .then((res) => {
+        if (!res.error) {
+          toast.success('User updated successfully');
+        }
+        // dù có lỗi hoặc thành công thì cũng phải clear giá trị của file input
+        e.target.value = '';
+      });
   };
 
   return (
