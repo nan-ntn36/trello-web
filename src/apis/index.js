@@ -3,6 +3,18 @@ import authorizeAxiosInstance from '~/utils/authorizeAxios';
 import { API_ROOT } from '~/utils/constants';
 
 // board api
+export const createNewBoarAPI = async (newBoardData) => {
+  const response = await authorizeAxiosInstance.post(
+    `${API_ROOT}/v1/boards`,
+    newBoardData
+  );
+  toast.success(
+    'Board create successfully!',
+  );
+
+  return response.data;
+}
+
 export const fetchBoardDetailsAPI = async (boardId) => {
   const response = await authorizeAxiosInstance.get(
     `${API_ROOT}/v1/boards/${boardId}`

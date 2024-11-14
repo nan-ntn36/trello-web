@@ -23,7 +23,7 @@ function App() {
         path="/"
         element={
           // Ở đây cần replace giá trị true để nó thay thế route /, có thể hiểu là route / không còn nằm trong history của browser
-          <Navigate to="/boards/" replace={true} />
+          <Navigate to="/boards" replace={true} />
         }
       />
       <Route element={<ProtectedRoute user={currentUser} />}>

@@ -104,7 +104,7 @@ function Board() {
     });
   };
 
-  if (!board) return <PageLoadingSpinner caption="Loading" />;
+  if (!board) return <PageLoadingSpinner caption="Loading...." />;
 
   return (
     <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
