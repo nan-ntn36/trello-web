@@ -1,4 +1,4 @@
-import { useState } from 'react'
+
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import Typography from '@mui/material/Typography'
@@ -35,10 +35,11 @@ import CardActivitySection from './CardActivitySection'
 
 
 import { useDispatch, useSelector } from 'react-redux'
-import { updateCurrentActiveCard, clearCurrentActiveCard,selectCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
+import { updateCurrentActiveCard, clearCurrentActiveCard, selectCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
 
 import { styled } from '@mui/material/styles'
 import { updateCardDetailsAPI } from '~/apis'
+import { updateCardInBoard } from '~/redux/activeBoard/activeBoardSlice'
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -72,21 +73,24 @@ function ActiveCard() {
     // setIsOpen(false)
     dispatch(clearCurrentActiveCard())
   }
-  // func gọi api dùng chung
-  const callApiActiveCard = async (updateData) => {
+  // func gọi api dùng chungs
+  const callApiUpdateCard = async (updateData) => {
     const updateCard = await updateCardDetailsAPI(activeCard?._id, updateData)
     // b1 cập nhật card đang active
     dispatch(updateCurrentActiveCard(updateCard))
     // b2 cập nhật bản ghi card trong activeBoard
+    dispatch(updateCardInBoard(updateCard))
     return updateCard;
   }
 
   const onUpdateCardTitle = (newTitle) => {
-    callApiActiveCard({ title: newTitle.trim() })
+    callApiUpdateCard({ title: newTitle.trim() })
+  }
+  const onUpdateCardDescription = (newDescription) => {
+    callApiUpdateCard({ description: newDescription })
   }
 
   const onUploadCardCover = (event) => {
-    console.log(event.target?.files[0])
     const error = singleFileValidator(event.target?.files[0])
     if (error) {
       toast.error(error)
@@ -94,6 +98,11 @@ function ActiveCard() {
     }
     let reqData = new FormData()
     reqData.append('cardCover', event.target?.files[0])
+
+    toast.promise(
+      callApiUpdateCard(reqData).finally(() => event.target.value = ''),
+      { pending: 'Upload....' }
+    )
   }
 
   return (
@@ -123,7 +132,7 @@ function ActiveCard() {
         }}>
           <CancelIcon color="error" sx={{ '&:hover': { color: 'error.light' } }} onClick={handleCloseModal} />
         </Box>
-        {activeCard?.cover && 
+        {activeCard?.cover &&
         <Box sx={{ mb: 4 }}>
           <img
             style={{ width: '100%', height: '320px', borderRadius: '6px', objectFit: 'cover' }}
@@ -159,7 +168,10 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 03: Xử lý mô tả của Card */}
-              <CardDescriptionMdEditor />
+              <CardDescriptionMdEditor
+                cardDescriptionProps ={activeCard?.description}
+                handleUpdateCardDesc ={onUpdateCardDescription}
+              />
             </Box>
 
             <Box sx={{ mb: 3 }}>
