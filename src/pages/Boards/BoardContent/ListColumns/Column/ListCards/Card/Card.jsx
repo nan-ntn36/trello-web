@@ -9,8 +9,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useDispatch } from 'react-redux';
+import { updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice';
 
 function TrelloCard({ card }) {
+  const dispatch = useDispatch();
   const {
     attributes,
     listeners,
@@ -29,16 +32,20 @@ function TrelloCard({ card }) {
     border: isDragging ? '1px solid #2ecc71' : undefined,
   };
 
-  function shouldShowCardAction() {
+  const shouldShowCardAction =() => {
     return (
       !!card?.memberIds?.length ||
       !!card?.comments?.length ||
       !!card?.attachments?.length
     );
   }
+  const setActiveCard = () => {
+    dispatch(updateCurrentActiveCard(card))
+  }
 
   return (
     <Card
+      onClick ={setActiveCard}
       sx={{
         cursor: 'pointer',
         boxShadow: '0 1px 1px rgba(0,0,0,0.2)',

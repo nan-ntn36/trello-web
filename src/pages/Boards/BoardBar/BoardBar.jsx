@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup, Box, Button, Tooltip } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import VpnLockIcon from '@mui/icons-material/VpnLock';
@@ -7,6 +7,7 @@ import BoltIcon from '@mui/icons-material/Bolt';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { capitalizeFirstLetter } from '~/utils/formats';
+import BoardUserGroup from './BoardUserGroup';
 
 const MENU_STYLE = {
   color: 'white',
@@ -87,52 +88,8 @@ function BoardBar({ board }) {
         >
           Invite
         </Button>
-        <AvatarGroup
-          max={4}
-          sx={{
-            gap: '10px',
-            '& .MuiAvatar-root': {
-              width: '35px',
-              height: '35px',
-              fontSize: '16px',
-              border: 'none',
-              color: 'white',
-              cursor: 'pointer',
-              '&:first-of-type': { bgcolor: '#a4b0de' },
-            },
-          }}
-        >
-          <Tooltip title="nav">
-            <Avatar
-              alt="Remy Sharp"
-              src="https://cdn.pixabay.com/photo/2017/06/12/16/35/bharat-2396074_640.jpg"
-            />
-          </Tooltip>
-          <Tooltip title="nav">
-            <Avatar
-              alt="Remy Sharp"
-              src="https://cdn.pixabay.com/photo/2017/06/12/16/35/bharat-2396074_640.jpg"
-            />
-          </Tooltip>
-          <Tooltip title="nav">
-            <Avatar
-              alt="Remy Sharp"
-              src="https://cdn.pixabay.com/photo/2017/06/12/16/35/bharat-2396074_640.jpg"
-            />
-          </Tooltip>
-          <Tooltip title="nav">
-            <Avatar
-              alt="Remy Sharp"
-              src="https://cdn.pixabay.com/photo/2017/06/12/16/35/bharat-2396074_640.jpg"
-            />
-          </Tooltip>
-          <Tooltip title="nav">
-            <Avatar
-              alt="Remy Sharp"
-              src="https://cdn.pixabay.com/photo/2017/06/12/16/35/bharat-2396074_640.jpg"
-            />
-          </Tooltip>
-        </AvatarGroup>
+        {/* Xữ lý hiển thị danh sách thành viên của board  */}
+        <BoardUserGroup/>
       </Box>
     </Box>
   );
