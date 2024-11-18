@@ -59,6 +59,8 @@ export const activeBoardSlice = createSlice({
       //action.payload chính là response.data trả về ở trên
       let board = action.payload;
 
+      // thành viên trong board là gộp lại từ owner và member
+      board.FE_allUsers = board.owners.concat(board.members)
       // sắp xếp thứ tự các column luôn ở đây trước khi đưa dữ liệu xuống bên dưới
       board.columns = mapOrder(board.columns, board.columnOrderIds, '_id');
 
