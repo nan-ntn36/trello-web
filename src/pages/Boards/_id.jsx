@@ -20,12 +20,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useParams } from 'react-router-dom';
 import PageLoadingSpinner from '~/components/Loading/PageLoadingSpiner';
+import ActiveCard from '~/components/Modal/ActiveCard/ActiveCard';
+import { selectCurrentActiveCard } from '~/redux/activeCard/activeCardSlice';
 
 function Board() {
   const dispatch = useDispatch();
   // const [board, setBoard] = useState(null);
   const board = useSelector(selectCurrentActiveBoard); // lấy dữ liệu từ redux
   const { boardId } = useParams();
+  const activeCard = useSelector(selectCurrentActiveCard)
 
   useEffect(() => {
     // call APi, đưa sang extrareducer của redux
@@ -104,10 +107,13 @@ function Board() {
     });
   };
 
-  if (!board) return <PageLoadingSpinner caption="Loading" />;
+  if (!board) return <PageLoadingSpinner caption="Loading...." />;
 
   return (
     <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
+      {/* modal active card, check đóng mở dựa theo điều kiện có tồn tại data activeCard lưu trong Redux hay không thì mới render. mỗi thời điểm chỉ tòn tại cái modal card đang active */}
+      {activeCard && <ActiveCard/>}
+      {/* Các thành phần còn lại của Boards details */}
       <AppBar />
       <BoardBar board={board} />
       <BoardContent

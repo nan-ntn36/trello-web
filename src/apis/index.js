@@ -3,6 +3,26 @@ import authorizeAxiosInstance from '~/utils/authorizeAxios';
 import { API_ROOT } from '~/utils/constants';
 
 // board api
+export const createNewBoarAPI = async (newBoardData) => {
+  const response = await authorizeAxiosInstance.post(
+    `${API_ROOT}/v1/boards`,
+    newBoardData
+  );
+  toast.success(
+    'Board create successfully!',
+  );
+
+  return response.data;
+}
+
+export const fetchBoardsApi = async (searchPath) => {
+  const response = await authorizeAxiosInstance.get(
+    `${API_ROOT}/v1/boards${searchPath}`
+  );
+
+  return response.data;
+};
+
 export const fetchBoardDetailsAPI = async (boardId) => {
   const response = await authorizeAxiosInstance.get(
     `${API_ROOT}/v1/boards/${boardId}`
@@ -61,6 +81,14 @@ export const createNewCardAPI = async (newCardData) => {
   return response.data;
 };
 
+export const updateCardDetailsAPI = async (cardId, updateData) => {
+  const response = await authorizeAxiosInstance.put(
+    `${API_ROOT}/v1/cards/${cardId}`,
+    updateData
+  );
+  return response.data;
+};
+// User
 export const registerUserApi = async (data) => {
   const response = await authorizeAxiosInstance.post(
     `${API_ROOT}/v1/users/register`,
@@ -91,3 +119,4 @@ export const refreshTokenApi = async () => {
 
   return response.data;
 };
+
