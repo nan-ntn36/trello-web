@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useDispatch } from 'react-redux';
-import { updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice';
+import { updateCurrentActiveCard, showModalActiveCard } from '~/redux/activeCard/activeCardSlice';
 
 function TrelloCard({ card }) {
   const dispatch = useDispatch();
@@ -41,6 +41,8 @@ function TrelloCard({ card }) {
   }
   const setActiveCard = () => {
     dispatch(updateCurrentActiveCard(card))
+    // hiện modal active card
+    dispatch(showModalActiveCard())
   }
 
   return (
