@@ -35,7 +35,7 @@ import CardActivitySection from './CardActivitySection'
 
 
 import { useDispatch, useSelector } from 'react-redux'
-import { updateCurrentActiveCard, clearCurrentActiveCard, selectCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
+import { updateCurrentActiveCard, clearAndeHideCurrentActiveCard, selectCurrentActiveCard, selectIsShowModalActiveCard } from '~/redux/activeCard/activeCardSlice'
 
 import { styled } from '@mui/material/styles'
 import { updateCardDetailsAPI } from '~/apis'
@@ -66,12 +66,13 @@ const SidebarItem = styled(Box)(({ theme }) => ({
 function ActiveCard() {
   const dispatch = useDispatch();
   const activeCard = useSelector(selectCurrentActiveCard)
+  const isShowModalActiveCard = useSelector(selectIsShowModalActiveCard)
   // Không dùng biến state để đóng mở modal-> redux
   // const [isOpen, setIsOpen] = useState(true)
   // const handleOpenModal = () => setIsOpen(true)
   const handleCloseModal = () => {
     // setIsOpen(false)
-    dispatch(clearCurrentActiveCard())
+    dispatch(clearAndeHideCurrentActiveCard())
   }
   // func gọi api dùng chungs
   const callApiUpdateCard = async (updateData) => {
@@ -105,10 +106,16 @@ function ActiveCard() {
     )
   }
 
+  // dùng async await ở đây để nhận một promis để sử dụng then clear input comment ở component con
+  const onAddCardComments = async (commentToAdd) => {
+    //
+    await callApiUpdateCard({ commentToAdd })
+  }
+
   return (
     <Modal
       disableScrollLock
-      open={true}
+      open={isShowModalActiveCard}
       onClose={handleCloseModal} // Sử dụng onClose trong trường hợp muốn đóng Modal bằng nút ESC hoặc click ra ngoài Modal
       sx={{ overflowY: 'auto' }}>
       <Box sx={{
@@ -181,7 +188,10 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 04: Xử lý các hành động, ví dụ comment vào Card */}
-              <CardActivitySection />
+              <CardActivitySection
+                cardComments ={activeCard?.comments}
+                onAddCardComment = {onAddCardComments}
+              />
             </Box>
           </Grid>
 

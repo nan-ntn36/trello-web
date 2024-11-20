@@ -8,12 +8,10 @@ export const createNewBoarAPI = async (newBoardData) => {
     `${API_ROOT}/v1/boards`,
     newBoardData
   );
-  toast.success(
-    'Board create successfully!',
-  );
+  toast.success('Board create successfully!');
 
   return response.data;
-}
+};
 
 export const fetchBoardsApi = async (searchPath) => {
   const response = await authorizeAxiosInstance.get(
@@ -120,3 +118,12 @@ export const refreshTokenApi = async () => {
   return response.data;
 };
 
+export const inviteUseToBoardApi = async (data) => {
+  const response = await authorizeAxiosInstance.post(
+    `${API_ROOT}/v1/invitations/board`,
+    data
+  );
+
+  toast.success('User invited to board successfully');
+  return response.data;
+};
