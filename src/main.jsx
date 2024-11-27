@@ -23,10 +23,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 
-// cấu hình socket
-import { io } from 'socket.io-client';
-import { API_ROOT } from './utils/constants.js';
-export const socketIoInstance = io(API_ROOT);
 const persistor = persistStore(store);
 
 // Inject store: là kỹ thuật khi cần sử dụng biến redux store ở các file ngoài phạm vi component
