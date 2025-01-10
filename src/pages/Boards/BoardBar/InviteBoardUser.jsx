@@ -14,7 +14,7 @@ import {
 } from '~/utils/validators';
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert';
 import { inviteUseToBoardApi } from '~/apis';
-
+import { socketIoInstance } from '~/socketClient';
 function InviteBoardUser({ boardId }) {
   /**
    * Xử lý Popover để ẩn hoặc hiện một popup nhỏ, tương tự docs để tham khảo ở đây:
@@ -37,11 +37,12 @@ function InviteBoardUser({ boardId }) {
   const submitInviteUserToBoard = (data) => {
     const { inviteeEmail } = data;
 
-    inviteUseToBoardApi({ inviteeEmail, boardId }).then(() => {
+    inviteUseToBoardApi({ inviteeEmail, boardId }).then((invitation) => {
       // Clear thẻ input sử dụng react-hook-form bằng setValue
       setValue('inviteeEmail', null);
       setAnchorPopoverElement(null);
       // mời một người dùng vào board xong thì cũng gửi thông báo (real time)
+      socketIoInstance.emit('FE_USER_INVITED_TO_BOARD', invitation);
     });
   };
 
