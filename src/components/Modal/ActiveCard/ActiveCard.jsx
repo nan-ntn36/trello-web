@@ -40,7 +40,7 @@ import {
   selectIsShowModalActiveCard,
 } from '~/redux/activeCard/activeCardSlice';
 
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/system';
 import { updateCardDetailsAPI } from '~/apis';
 import { updateCardInBoard } from '~/redux/activeBoard/activeBoardSlice';
 import { selectCurrentUser } from '~/redux/user/userSlice';

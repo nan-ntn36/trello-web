@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import { useColorScheme } from '@mui/material/styles'
-import MDEditor from '@uiw/react-md-editor'
-import rehypeSanitize from 'rehype-sanitize'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import EditNoteIcon from '@mui/icons-material/EditNote'
+import { useState } from 'react';
+// import { useColorScheme } from '@mui/system';
+import { useColorScheme } from '@mui/material';
+import MDEditor from '@uiw/react-md-editor';
+import rehypeSanitize from 'rehype-sanitize';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 
 // eslint-disable-next-line no-unused-vars
 const markdownValueExample = `
@@ -17,30 +18,33 @@ const markdownValueExample = `
   import ReactDOM from "react-dom"
   import MDEditor from '@uiw/react-md-editor'
   \`\`\`
-`
+`;
 /**
  * Vài ví dụ Markdown từ lib
  * https://codesandbox.io/embed/markdown-editor-for-react-izdd6?fontsize=14&hidenavigation=1&theme=dark
  */
-function CardDescriptionMdEditor({ cardDescriptionProps, handleUpdateCardDesc }) {
+function CardDescriptionMdEditor({
+  cardDescriptionProps,
+  handleUpdateCardDesc,
+}) {
   // Lấy giá trị 'dark', 'light' hoặc 'system' mode từ MUI để support phần Markdown bên dưới: data-color-mode={mode}
   // https://www.npmjs.com/package/@uiw/react-md-editor#support-dark-modenight-mode
-  const { mode } = useColorScheme()
+  const { mode } = useColorScheme();
 
   // State xử lý chế độ Edit và chế độ View
-  const [markdownEditMode, setMarkdownEditMode] = useState(false)
+  const [markdownEditMode, setMarkdownEditMode] = useState(false);
   // State xử lý giá trị markdown khi chỉnh sửa
-  const [cardDescription, setCardDescription] = useState(cardDescriptionProps)
+  const [cardDescription, setCardDescription] = useState(cardDescriptionProps);
 
   const updateCardDescription = () => {
-    setMarkdownEditMode(false)
-    handleUpdateCardDesc(cardDescription)
-  }
+    setMarkdownEditMode(false);
+    handleUpdateCardDesc(cardDescription);
+  };
 
   return (
     <Box sx={{ mt: -4 }}>
-      {markdownEditMode
-        ? <Box sx={{ mt: 5, display: 'flex', flexDirection: 'column', gap: 1 }}>
+      {markdownEditMode ? (
+        <Box sx={{ mt: 5, display: 'flex', flexDirection: 'column', gap: 1 }}>
           <Box data-color-mode={mode}>
             <MDEditor
               value={cardDescription}
@@ -58,11 +62,13 @@ function CardDescriptionMdEditor({ cardDescriptionProps, handleUpdateCardDesc })
             type="button"
             variant="contained"
             size="small"
-            color="info">
+            color="info"
+          >
             Save
           </Button>
         </Box>
-        : <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      ) : (
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Button
             sx={{ alignSelf: 'flex-end' }}
             onClick={() => setMarkdownEditMode(true)}
@@ -70,7 +76,8 @@ function CardDescriptionMdEditor({ cardDescriptionProps, handleUpdateCardDesc })
             variant="contained"
             color="info"
             size="small"
-            startIcon={<EditNoteIcon />}>
+            startIcon={<EditNoteIcon />}
+          >
             Edit
           </Button>
           <Box data-color-mode={mode}>
@@ -79,15 +86,17 @@ function CardDescriptionMdEditor({ cardDescriptionProps, handleUpdateCardDesc })
               style={{
                 whiteSpace: 'pre-wrap',
                 padding: cardDescription ? '10px' : '0px',
-                border:  cardDescription ? '0.5px solid rgba(0, 0, 0, 0.2)' : 'none',
-                borderRadius: '8px'
+                border: cardDescription
+                  ? '0.5px solid rgba(0, 0, 0, 0.2)'
+                  : 'none',
+                borderRadius: '8px',
               }}
             />
           </Box>
         </Box>
-      }
+      )}
     </Box>
-  )
+  );
 }
 
-export default CardDescriptionMdEditor
+export default CardDescriptionMdEditor;
