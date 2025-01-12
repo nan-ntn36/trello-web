@@ -1,6 +1,6 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import { GlobalStyles } from '@mui/material';
-import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
+import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';

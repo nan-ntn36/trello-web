@@ -1,11 +1,12 @@
 // import { cyan, deepOrange, orange, teal } from '@mui/material/colors';
-import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
+// import { experimental_extendTheme as extendTheme } from '@mui/system';
+import { experimental_extendTheme as extendTheme } from '@mui/material';
 
-const APP_BAR_HEIGHT = "58px";
-const BOARD_BAR_HEIGHT = "60px";
+const APP_BAR_HEIGHT = '58px';
+const BOARD_BAR_HEIGHT = '60px';
 const BOARD_CONTENT_HEIGHT = `calc(100vh - ${APP_BAR_HEIGHT} - ${BOARD_BAR_HEIGHT})`;
-const COLLUMN_HEADER_HEIGHT = "50px";
-const COLLUMN_FOOTER_HEIGHT = "56px";
+const COLLUMN_HEADER_HEIGHT = '50px';
+const COLLUMN_FOOTER_HEIGHT = '56px';
 
 // Create a theme instance material UI.
 const theme = extendTheme({
@@ -34,16 +35,16 @@ const theme = extendTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          "*::-webkit-scrollbar": {
-            width: "8px",
-            height: "8px",
+          '*::-webkit-scrollbar': {
+            width: '8px',
+            height: '8px',
           },
-          "*::-webkit-scrollbar-thumb": {
-            backgroundColor: "#dcdde1",
-            borderRadius: "8px",
+          '*::-webkit-scrollbar-thumb': {
+            backgroundColor: '#dcdde1',
+            borderRadius: '8px',
           },
-          "*::-webkit-scrollbar-thumb:hover": {
-            backgroundColor: "#white",
+          '*::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: '#white',
           },
         },
       },
@@ -51,10 +52,10 @@ const theme = extendTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: "none",
-          borderWidth: "0.5px",
-          "&:hover": {
-            borderWidth: "0.5px",
+          textTransform: 'none',
+          borderWidth: '0.5px',
+          '&:hover': {
+            borderWidth: '0.5px',
           },
         },
       },
@@ -62,14 +63,14 @@ const theme = extendTheme({
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          fontSize: "0.875rem",
+          fontSize: '0.875rem',
         },
       },
     },
     MuiTypography: {
       styleOverrides: {
         root: {
-          "&.MuiTypography-body1": { fontSize: "0.875rem" },
+          '&.MuiTypography-body1': { fontSize: '0.875rem' },
         },
       },
     },
@@ -77,16 +78,16 @@ const theme = extendTheme({
       styleOverrides: {
         root: ({ theme }) => {
           return {
-            fontSize: "0.875rem",
-            "& fieldset": {
-              borderWidth: "1px !important",
+            fontSize: '0.875rem',
+            '& fieldset': {
+              borderWidth: '1px !important',
             },
-            "&:hover fieldset": {
-              borderWidth: "1px !important",
+            '&:hover fieldset': {
+              borderWidth: '1px !important',
             },
 
-            "&.Mui-focused fieldset": {
-              borderWidth: "1px !important",
+            '&.Mui-focused fieldset': {
+              borderWidth: '1px !important',
             },
           };
         },

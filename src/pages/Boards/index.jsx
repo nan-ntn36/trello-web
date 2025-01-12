@@ -22,7 +22,7 @@ import randomColor from 'randomcolor';
 import SidebarCreateBoardModal from './create';
 import { fetchBoardsApi } from '~/apis';
 
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/system';
 import { DEFAULT_ITEMS_PER_PAGE, DEFAULT_PAGE } from '~/utils/constants';
 // Styles của mấy cái Sidebar item menu, anh gom lại ra đây cho gọn.
 const SidebarItem = styled(Box)(({ theme }) => ({
@@ -62,11 +62,10 @@ function Boards() {
    */
   const page = parseInt(query.get('page') || '1', 10);
 
-
   const updateStateData = (res) => {
-    setBoards(res.boards || [])
-    setTotalBoards(res.toltalBoards || 0)
-  }
+    setBoards(res.boards || []);
+    setTotalBoards(res.toltalBoards || 0);
+  };
 
   useEffect(() => {
     // Fake tạm 16 cái item thay cho boards
@@ -76,12 +75,12 @@ function Boards() {
     // setTotalBoards(100);
 
     // Gọi API lấy danh sách boards ở đây...
-    fetchBoardsApi(location.search).then(updateStateData)
+    fetchBoardsApi(location.search).then(updateStateData);
   }, [location.search]);
 
-  const afterCreateNewBoard= () => {
-    fetchBoardsApi(location.search).then(updateStateData)
-  }
+  const afterCreateNewBoard = () => {
+    fetchBoardsApi(location.search).then(updateStateData);
+  };
   // Lúc chưa tồn tại boards > đang chờ gọi api thì hiện loading
   if (!boards) {
     return <PageLoadingSpinner caption="Loading Boards..." />;
@@ -109,7 +108,9 @@ function Boards() {
             </Stack>
             <Divider sx={{ my: 1 }} />
             <Stack direction="column" spacing={1}>
-              <SidebarCreateBoardModal afterCreateNewBoard = {afterCreateNewBoard} />
+              <SidebarCreateBoardModal
+                afterCreateNewBoard={afterCreateNewBoard}
+              />
             </Stack>
           </Grid>
 

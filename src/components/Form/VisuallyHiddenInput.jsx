@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles'
+import { styled } from '@mui/system';
 
 /**
  * Ví dụ xử lý custom đẹp cái input file ở đây:
@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles'
  * https://github.com/viclafouch/mui-file-input
  */
 const HiddenInputStyles = styled('input')({
-  display: 'none' // Docs ở trên làm css dài quá, chỉ cần display none để ẩn thẻ input file đi là đủ rồi :))
+  display: 'none', // Docs ở trên làm css dài quá, chỉ cần display none để ẩn thẻ input file đi là đủ rồi :))
 
   // clip: 'rect(0 0 0 0)',
   // clipPath: 'inset(50%)',
@@ -20,10 +20,10 @@ const HiddenInputStyles = styled('input')({
   // left: 0,
   // whiteSpace: 'nowrap',
   // width: 1
-})
+});
 
 function VisuallyHiddenInput(props) {
-  return <HiddenInputStyles {...props} />
+  return <HiddenInputStyles {...props} />;
 }
 
-export default VisuallyHiddenInput
+export default VisuallyHiddenInput;
