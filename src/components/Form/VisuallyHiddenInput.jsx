@@ -1,4 +1,4 @@
-import { styled } from '@mui/system';
+import { styled } from '@mui/material/styles';
 
 /**
  * Ví dụ xử lý custom đẹp cái input file ở đây:
