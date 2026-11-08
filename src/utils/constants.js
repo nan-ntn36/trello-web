@@ -1,6 +1,6 @@
 let apiRoot = '';
 if (process.env.BUILD_MODE === 'dev') {
-  apiRoot = 'http://localhost:3694';
+  apiRoot = 'http://localhost:3692';
 }
 if (process.env.BUILD_MODE === 'production') {
   apiRoot = '';
